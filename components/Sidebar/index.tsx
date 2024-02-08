@@ -15,7 +15,12 @@ const Sidebar = ({ setter, show }: SidebarProps) => {
     return (
       <div className="ps-4 mb-2">
         {href ? (
-          <Link className="text-black hover:text-blue-600" href={href}>
+          <Link
+            className="text-black hover:text-blue-600 hover:ml-1"
+            href={href}
+            isExternal={href.startsWith('http')}
+            showAnchorIcon={href.startsWith('http')}
+          >
             {title}
           </Link>
         ) : (
@@ -36,16 +41,9 @@ const Sidebar = ({ setter, show }: SidebarProps) => {
     <div className={`${className}${appendClass}`}>
       <SidebarItem title="Home" href="/" />
       <SidebarItem title="Table" href="/table" />
-
-      <Divider className="mb-2" />
-
-      <SidebarItem title="Something" />
-      <SidebarItem title="Something Else" />
-
-      <Divider className="mb-2" />
-
-      <SidebarItem title="More Things" />
-      <SidebarItem title="And More" />
+      <SidebarItem title="Drag and Drop" href="/dragdrop" />
+      <Divider className="my-2" />
+      <SidebarItem title="Source Code" href="https://github.com/JulianNicholls/sidebar-layout" />
     </div>
   );
 };

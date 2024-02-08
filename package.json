@@ -1,6 +1,6 @@
 {
-  "name": "table-demo",
-  "version": "0.1.0",
+  "name": "next-studies",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,12 +13,14 @@
     "framer-motion": "^10.18.0",
     "next": "14.0.4",
     "react": "^18",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
     "react-icons": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
