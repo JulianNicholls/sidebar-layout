@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import Burger from './Burger';
+import Chevron from './Chevron';
 import MainNavbar from './navbar';
 import Sidebar from '../Sidebar';
 
@@ -18,8 +18,8 @@ const SidebarLayout = ({ children }: SLProps) => {
       <MainNavbar />
 
       <div className="flex">
-        <Burger setter={setShowSidebar} show={showSidebar} />
-        <Sidebar show={showSidebar} />
+        <Chevron setter={setShowSidebar} show={showSidebar} />
+        <Sidebar setter={setShowSidebar} show={showSidebar} />
         <div className="flex flex-col flex-grow w-screen md:w-full min-h-screen">{children}</div>
       </div>
     </div>

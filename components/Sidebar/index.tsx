@@ -6,24 +6,27 @@ interface ItemProps {
 }
 
 interface SidebarProps {
+  setter: (show: boolean) => void;
   show: boolean;
 }
 
-const SidebarItem = ({ title, href }: ItemProps) => {
-  return (
-    <div className="ps-4 mb-2">
-      {href ? (
-        <Link className="text-black hover:text-blue-600" href={href}>
-          {title}
-        </Link>
-      ) : (
-        <div className="cursor:pointer">{title}</div>
-      )}
-    </div>
-  );
-};
+const Sidebar = ({ setter, show }: SidebarProps) => {
+  const SidebarItem = ({ title, href }: ItemProps) => {
+    return (
+      <div className="ps-4 mb-2">
+        {href ? (
+          <Link className="text-black hover:text-blue-600" href={href}>
+            {title}
+          </Link>
+        ) : (
+          <div className="cursor-pointer" onClick={() => setter(!show)}>
+            {title}
+          </div>
+        )}
+      </div>
+    );
+  };
 
-const Sidebar = ({ show }: SidebarProps) => {
   const className =
     'bg-white w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:static top-20 pt-4 bottom-0 left-0 z-[200] border-r-[1px]';
   // Append class based on state of sidebar visiblity
