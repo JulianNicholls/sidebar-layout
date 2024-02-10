@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Button } from '@nextui-org/react';
+import { faker } from '@faker-js/faker';
 
 import {
   DragDropContext,
@@ -16,14 +17,25 @@ import {
 
 type Item = {
   id: string;
-  content: string;
+  content: ReactNode;
+};
+
+type Column = {
+  title: string;
+  items: Item[];
 };
 
 // fake data generator
 const getItems = (count: number, offset = 0): Item[] =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime()}`,
-    content: `item ${k + offset}`,
+    content: (
+      <div>
+        {faker.person.fullName()}
+        <br />
+        <span className="text-sm">({faker.internet.email()})</span>
+      </div>
+    ),
   }));
 
 const reorder = (list: Item[], startIndex: number, endIndex: number) => {
@@ -69,16 +81,10 @@ const getItemStyle = (
   margin: `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
+  background: isDragging ? '#d0d0d0' : '#f0f0f0',
 
   // styles we need to apply on draggables
   ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250,
 });
 
 const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
@@ -100,8 +106,11 @@ const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   return <Droppable {...props}>{children}</Droppable>;
 };
 
-function QuoteApp() {
-  const [state, setState] = useState([getItems(10), getItems(5, 10)]);
+function AnalysisPage() {
+  const [columns, setColumns] = useState<Column[]>([
+    { title: 'Issues Begun', items: getItems(10) },
+    { title: 'Issues Specified', items: getItems(5, 10) },
+  ]);
 
   function onDragEnd(result: DropResult) {
     const { source, destination } = result;
@@ -113,79 +122,88 @@ function QuoteApp() {
     const dInd = +destination.droppableId;
 
     if (sInd === dInd) {
-      const items = reorder(state[sInd], source.index, destination.index);
-      const newState = [...state];
-      newState[sInd] = items;
-      setState(newState);
+      const items = reorder(columns[sInd].items, source.index, destination.index);
+      const newState = [...columns];
+      newState[sInd].items = items;
+      setColumns(newState);
     } else {
-      const result = move(state[sInd], state[dInd], source, destination);
-      const newState = [...state];
-      newState[sInd] = result[sInd];
-      newState[dInd] = result[dInd];
+      const result = move(columns[sInd].items, columns[dInd].items, source, destination);
+      const newState = [...columns];
+      newState[sInd].items = result[sInd];
+      newState[dInd].items = result[dInd];
 
-      setState(newState.filter((group) => group.length));
+      // Previously, empty columns were removed
+      // setColumns(newState.filter((group) => group.items.length > 0));
     }
   }
 
   return (
     <div>
       <Button
+        color="primary"
         className="me-2 mb-2"
         onPress={() => {
-          setState([...state, []]);
+          setColumns([...columns, { title: faker.company.buzzPhrase(), items: [] }]);
         }}
       >
-        Add new group
+        Add new Column
       </Button>
 
       <Button
+        color="primary"
         onPress={() => {
-          setState([...state, getItems(1)]);
+          const copy = [...columns];
+          const randCol = Math.floor(Math.random() * columns.length);
+          copy[randCol].items.push(getItems(1)[0]);
+          setColumns(copy);
         }}
       >
-        Add new item
+        Add new Consumer
       </Button>
 
-      <div className="flex">
+      <div className="flex mt-4">
         <DragDropContext onDragEnd={onDragEnd}>
-          {state.map((el, idx) => (
-            <StrictModeDroppable key={idx} droppableId={`${idx}`}>
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                  {...provided.droppableProps}
-                >
-                  {el.map((item, index) => (
-                    <Draggable key={item.id} draggableId={item.id} index={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                        >
-                          <div className="flex justify-around">
-                            {item.content}
-                            <Button
-                              size="sm"
-                              onClick={() => {
-                                const newState = [...state];
-                                newState[idx].splice(index, 1);
-                                setState(newState.filter((group) => group.length));
-                              }}
-                            >
-                              delete
-                            </Button>
+          {columns.map((col, idx) => (
+            <div key={col.title} className="flex flex-col gap-2 items-stretch">
+              <div className="text-center text-lg text-blue-800">{col.title}</div>
+              <StrictModeDroppable key={idx} droppableId={`${idx}`}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    className={`w-96 p-2 ${snapshot.isDraggingOver ? 'bg-blue-100' : 'bg-white'}`}
+                    {...provided.droppableProps}
+                  >
+                    {col.items.map((item, index) => (
+                      <Draggable key={item.id} draggableId={item.id} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                          >
+                            <div className="flex justify-between px-2">
+                              {item.content}
+                              <Button
+                                size="sm"
+                                onClick={() => {
+                                  const newColumns = [...columns];
+                                  newColumns[idx].items.splice(index, 1);
+                                  setColumns(newColumns);
+                                }}
+                              >
+                                delete
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </StrictModeDroppable>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </StrictModeDroppable>
+            </div>
           ))}
         </DragDropContext>
       </div>
@@ -193,4 +211,4 @@ function QuoteApp() {
   );
 }
 
-export default QuoteApp;
+export default AnalysisPage;
