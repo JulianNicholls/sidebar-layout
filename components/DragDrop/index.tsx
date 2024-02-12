@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, ReactNode } from 'react';
-import { Button } from '@nextui-org/react';
+import { Button, Card, CardHeader, CardBody } from '@nextui-org/react';
 import { faker } from '@faker-js/faker';
 
 import {
@@ -33,7 +33,7 @@ const getItems = (count: number, offset = 0): Item[] =>
       <div>
         {faker.person.fullName()}
         <br />
-        <span className="text-sm">({faker.internet.email()})</span>
+        <span className="text-xs">({faker.internet.email()})</span>
       </div>
     ),
   }));
@@ -81,7 +81,7 @@ const getItemStyle = (
   margin: `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? '#d0d0d0' : '#f0f0f0',
+  background: isDragging ? '#22d3ee' : 'lightskyblue',
 
   // styles we need to apply on draggables
   ...draggableStyle,
@@ -161,49 +161,58 @@ function AnalysisPage() {
         Add new Consumer
       </Button>
 
-      <div className="flex mt-4">
+      <div className="flex mt-4 gap-2">
         <DragDropContext onDragEnd={onDragEnd}>
           {columns.map((col, idx) => (
-            <div key={col.title} className="flex flex-col gap-2 items-stretch">
-              <div className="text-center text-lg text-blue-800">{col.title}</div>
-              <StrictModeDroppable key={idx} droppableId={`${idx}`}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    className={`w-96 p-2 ${snapshot.isDraggingOver ? 'bg-blue-100' : 'bg-white'}`}
-                    {...provided.droppableProps}
-                  >
-                    {col.items.map((item, index) => (
-                      <Draggable key={item.id} draggableId={item.id} index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                          >
-                            <div className="flex justify-between px-2">
-                              {item.content}
-                              <Button
-                                size="sm"
-                                onClick={() => {
-                                  const newColumns = [...columns];
-                                  newColumns[idx].items.splice(index, 1);
-                                  setColumns(newColumns);
-                                }}
-                              >
-                                delete
-                              </Button>
+            <Card key={col.title}>
+              <CardHeader>
+                <div className="w-full text-center text-blue-800">{col.title}</div>{' '}
+              </CardHeader>
+              <CardBody>
+                <StrictModeDroppable key={idx} droppableId={`${idx}`}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      className={`w-84 p-2 ${snapshot.isDraggingOver ? 'bg-blue-100' : 'bg-white'}`}
+                      {...provided.droppableProps}
+                    >
+                      {col.items.map((item, index) => (
+                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              className="rounded"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                            >
+                              <div className="flex justify-between px-2 items-center">
+                                {item.content}
+                                <Button
+                                  size="sm"
+                                  color="danger"
+                                  onClick={() => {
+                                    const newColumns = [...columns];
+                                    newColumns[idx].items.splice(index, 1);
+                                    setColumns(newColumns);
+                                  }}
+                                >
+                                  delete
+                                </Button>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </StrictModeDroppable>
-            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </StrictModeDroppable>
+              </CardBody>{' '}
+            </Card>
           ))}
         </DragDropContext>
       </div>
