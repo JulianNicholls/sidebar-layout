@@ -1,4 +1,5 @@
 import { Link, Divider } from '@nextui-org/react';
+import { usePathname } from 'next/navigation';
 
 interface ItemProps {
   title: string;
@@ -12,14 +13,19 @@ interface SidebarProps {
 
 const Sidebar = ({ setter, show }: SidebarProps) => {
   const SidebarItem = ({ title, href }: ItemProps) => {
+    const external = href?.startsWith('http');
+    const current = usePathname();
+
     return (
       <div className="ps-4 mb-2">
         {href ? (
           <Link
-            className="text-black hover:text-blue-600 hover:ml-1"
+            className={`hover:text-blue-600 hover:font-bold ${
+              current === href ? 'text-green-600 font-semibold' : 'text-black'
+            }`}
             href={href}
-            isExternal={href.startsWith('http')}
-            showAnchorIcon={href.startsWith('http')}
+            isExternal={external}
+            showAnchorIcon={external}
           >
             {title}
           </Link>
@@ -42,6 +48,7 @@ const Sidebar = ({ setter, show }: SidebarProps) => {
       <SidebarItem title="Home" href="/" />
       <SidebarItem title="Table" href="/table" />
       <SidebarItem title="Drag and Drop" href="/dragdrop" />
+      <SidebarItem title="Image Containment" href="/images" />
       <Divider className="my-2" />
       <SidebarItem title="Source Code" href="https://github.com/JulianNicholls/sidebar-layout" />
     </div>

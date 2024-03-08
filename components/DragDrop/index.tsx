@@ -180,7 +180,7 @@ function AnalysisPage() {
                         <Draggable key={item.id} draggableId={item.id} index={index}>
                           {(provided, snapshot) => (
                             <div
-                              className="rounded"
+                              className="rounded-lg"
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
