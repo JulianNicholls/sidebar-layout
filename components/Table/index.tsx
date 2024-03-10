@@ -116,7 +116,7 @@ export default function TableExample() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p>
+            <p className="text-bold text-tiny capitalize text-stone-700">{user.team}</p>
           </div>
         );
       case 'status':
@@ -240,11 +240,11 @@ export default function TableExample() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} users</span>
-          <label className="flex items-center text-default-400 text-small">
+          <span className="text-stone-700 text-small">Total {users.length} users</span>
+          <label className="flex items-center text-stone-700 text-small">
             Rows per page:
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="bg-transparent outline-none text-stone-700 text-small"
               onChange={onRowsPerPageChange}
             >
               <option value="5">5</option>
@@ -260,7 +260,7 @@ export default function TableExample() {
   const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
+        <span className="w-[30%] text-small text-stone-700">
           {selectedKeys === 'all'
             ? 'All items selected'
             : `${selectedKeys.size} of ${filteredItems.length} selected`}

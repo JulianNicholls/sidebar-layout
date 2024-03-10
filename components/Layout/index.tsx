@@ -20,7 +20,9 @@ const SidebarLayout = ({ children }: SLProps) => {
       <div className="flex">
         <Chevron setter={setShowSidebar} show={showSidebar} />
         <Sidebar setter={setShowSidebar} show={showSidebar} />
-        <div className="flex flex-col flex-grow w-screen md:w-full min-h-screen">{children}</div>
+        <div className="flex flex-col flex-grow w-screen md:w-full min-h-screen bg-white">
+          {children}
+        </div>
       </div>
     </div>
   );
