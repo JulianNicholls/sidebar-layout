@@ -6,7 +6,7 @@ import Batteries from '/public/images/Batteries.png';
 const ImageContainment = () => {
   return (
     <div className="container mx-auto">
-      <div className="w-1/2 mb-6 p-6 bg-sky-600 text-white">
+      <div className="w-2/3 mx-auto mb-6 p-6 bg-sky-600 text-white">
         <p className="mb-4">
           This shows image containment. All of these images are much bigger than the{' '}
           <code className="bg-blue-800 text-white px-2 py-1">div</code>s that they are contained in.
@@ -25,7 +25,7 @@ const ImageContainment = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 justify-start">
+      <div className="grid grid-cols-2 w-[1200px] mx-auto gap-4 justify-start">
         <div className="flex flex-col gap-4 p-2 w-[550px] h-80 bg-blue-200 text-black">
           <div className="text-center">Contain</div>
           <Image

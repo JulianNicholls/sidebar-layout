@@ -1,19 +1,18 @@
 'use client';
 
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { Button, Card, CardHeader, CardBody } from '@nextui-org/react';
 import { faker } from '@faker-js/faker';
 
 import {
   DragDropContext,
-  Droppable,
-  DroppableProps,
   Draggable,
   DropResult,
   DraggingStyle,
   NotDraggingStyle,
   DraggableLocation,
 } from 'react-beautiful-dnd';
+import StrictModeDroppable from './SMDroppable';
 
 type Item = {
   id: string;
@@ -31,7 +30,7 @@ const getItems = (count: number, offset = 0): Item[] =>
     id: `item-${k + offset}-${new Date().getTime()}`,
     content: (
       <div>
-        {faker.person.fullName()}
+        <span className="font-semibold">{faker.person.fullName()}</span>
         <br />
         <span className="text-xs">({faker.internet.email()})</span>
       </div>
@@ -81,30 +80,11 @@ const getItemStyle = (
   margin: `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? '#22d3ee' : 'lightskyblue',
+  background: isDragging ? '#22d3ee' : '#ffedd1',
 
   // styles we need to apply on draggables
   ...draggableStyle,
 });
-
-const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
-
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
-  }, []);
-
-  if (!enabled) {
-    return null;
-  }
-
-  return <Droppable {...props}>{children}</Droppable>;
-};
 
 function AnalysisPage() {
   const [columns, setColumns] = useState<Column[]>([
@@ -173,7 +153,9 @@ function AnalysisPage() {
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
-                      className={`w-84 p-2 ${snapshot.isDraggingOver ? 'bg-blue-100' : 'bg-white'}`}
+                      className={`w-[22rem] p-2 ${
+                        snapshot.isDraggingOver ? 'bg-blue-100' : 'bg-white'
+                      }`}
                       {...provided.droppableProps}
                     >
                       {col.items.map((item, index) => (

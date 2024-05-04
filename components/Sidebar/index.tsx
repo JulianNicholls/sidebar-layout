@@ -20,7 +20,7 @@ const Sidebar = ({ setter, show }: SidebarProps) => {
       <div className="ps-4 mb-2">
         {href ? (
           <Link
-            className={`hover:text-blue-600 hover:font-bold ${
+            className={`hover:text-blue-600 hover:font-semibold ${
               current === href ? 'text-green-600 font-semibold' : 'text-black'
             }`}
             href={href}
@@ -39,9 +39,9 @@ const Sidebar = ({ setter, show }: SidebarProps) => {
   };
 
   const className =
-    'bg-white w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:static top-20 pt-4 bottom-0 left-0 z-[200] border-r-[1px]';
+    'bg-white min-w-[250px] transition-[margin-left] ease-in-out duration-500 fixed lg:static top-20 pt-4 bottom-0 left-0 z-[200] border-r-[1px]';
   // Append class based on state of sidebar visiblity
-  const appendClass = show ? ' ml-0' : ' ml-[-250px] md:ml-0';
+  const appendClass = show ? ' ml-0' : ' ml-[-250px] lg:ml-0';
 
   return (
     <div className={`${className}${appendClass}`}>
