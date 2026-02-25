@@ -5,7 +5,7 @@ import { DateValue, parseDate, getLocalTimeZone } from '@internationalized/date'
 import { I18nProvider } from '@react-aria/i18n';
 
 export default function App() {
-  const [value, setValue] = useState<DateValue>(parseDate('2024-04-04'));
+  const [value, setValue] = useState<DateValue | null>(parseDate('2024-04-04'));
 
   return (
     <div className="flex flex-row gap-2">

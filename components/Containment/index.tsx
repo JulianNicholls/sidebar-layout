@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import Arizona from '/public/images/arizona.jpg';
-import BayArea from '/public/images/bay-area.png';
-import Batteries from '/public/images/Batteries.png';
+import Arizona from '../..//public/images/arizona.jpg';
+import BayArea from '../..//public/images/bay-area.png';
+import Batteries from '../..//public/images/Batteries.png';
 
 const ImageContainment = () => {
   return (
